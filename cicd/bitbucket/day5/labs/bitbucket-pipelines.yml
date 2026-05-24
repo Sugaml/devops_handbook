@@ -1,0 +1,25 @@
+definitions:
+  services:
+    docker:
+      memory: 3072
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Test
+          image: python:3.12-slim
+          script:
+            - pip install -r requirements.txt
+            - pytest -v --junitxml=junit.xml
+          artifacts:
+            - junit.xml
+      - step:
+          name: Build and push Docker image
+          services:
+            - docker
+          script:
+            - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            - export IMAGE=${DOCKERHUB_USERNAME}/sample-web:${BITBUCKET_COMMIT:0:7}
+            - docker build -t $IMAGE .
+            - docker push $IMAGE

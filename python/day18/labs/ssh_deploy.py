@@ -97,7 +97,7 @@ def main() -> int:
 
     sub.add_parser("ping", help="Run hostname on all hosts")
     p_exec = sub.add_parser("exec", help="Run arbitrary command")
-    p_exec.add_argument("command")
+    p_exec.add_argument("remote_command")
     p_up = sub.add_parser("upload", help="SFTP upload file")
     p_up.add_argument("local", type=Path)
     p_up.add_argument("remote")
@@ -121,7 +121,7 @@ def main() -> int:
     elif args.command == "exec":
         results = run_fleet(
             hosts,
-            lambda h: run_on_host(h, args.command),
+            lambda h: run_on_host(h, args.remote_command),
             args.parallel,
         )
     else:

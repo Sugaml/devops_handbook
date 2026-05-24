@@ -1,0 +1,26 @@
+image: python:3.12-slim
+
+definitions:
+  services:
+    docker:
+      memory: 2048
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Test
+          script:
+            - pip install -r requirements.txt && pytest -v
+      - step:
+          name: Deploy staging
+          deployment: staging
+          script:
+            - echo "Deploy ${BITBUCKET_COMMIT} to staging"
+            - test -n "${STAGING_TOKEN}"
+      - step:
+          name: Deploy production
+          deployment: production
+          trigger: manual
+          script:
+            - echo "Production deploy ${BITBUCKET_COMMIT}"

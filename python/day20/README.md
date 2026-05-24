@@ -53,7 +53,7 @@ conn.close()
 ```python
 def sqlite_integrity(path: Path) -> bool:
     conn = sqlite3.connect(path)
-  try:
+    try:
         row = conn.execute("PRAGMA integrity_check").fetchone()
         return row[0] == "ok"
     finally:
@@ -226,4 +226,4 @@ Work from `python/day20/labs/`.
 | Table exists | Query `information_schema.tables` |
 | Latency | `time.monotonic()` around query |
 
-**Next:** Continue your Python for DevOps path — integrate Days 11–20 into a single pipeline health runner.
+**Next:** [Day 21 — Ansible programmatic use & dynamic inventory](../day21/)
