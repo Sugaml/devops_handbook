@@ -1,0 +1,26 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: handbook-nginx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "8082:8082"
+      - "8443:8443"
+    volumes:
+      - ./labs/conf:/etc/nginx/conf.d:ro
+      - ./labs/html:/usr/share/nginx/html:ro
+      - ./labs/certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend1
+      - backend2
+
+  backend1:
+    image: hashicorp/http-echo:1.0
+    container_name: handbook-backend1
+    command: ["-text=backend1 OK", "-listen=:5678"]
+
+  backend2:
+    image: hashicorp/http-echo:1.0
+    container_name: handbook-backend2
+    command: ["-text=backend2 OK", "-listen=:5678"]

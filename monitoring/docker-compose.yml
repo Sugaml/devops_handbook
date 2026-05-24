@@ -1,0 +1,92 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: handbook-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./labs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./labs/prometheus/rules:/etc/prometheus/rules:ro
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+      - --web.enable-lifecycle
+    depends_on:
+      - node-exporter
+      - demo-app
+      - blackbox-exporter
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: handbook-alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./labs/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: handbook-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: handbook
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./labs/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: handbook-node-exporter
+    ports:
+      - "9100:9100"
+    command:
+      - --path.rootfs=/host
+    volumes:
+      - /:/host:ro,rslave
+    pid: host
+
+  demo-app:
+    image: nginx:1.27-alpine
+    container_name: handbook-demo-app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./labs/demo-app/index.html:/usr/share/nginx/html/index.html:ro
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.25.0
+    container_name: handbook-blackbox
+    ports:
+      - "9115:9115"
+    volumes:
+      - ./labs/blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    command:
+      - --config.file=/etc/blackbox_exporter/config.yml
+
+  loki:
+    image: grafana/loki:3.1.1
+    container_name: handbook-loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki-config.yml
+    volumes:
+      - ./labs/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+
+  promtail:
+    image: grafana/promtail:3.1.1
+    container_name: handbook-promtail
+    volumes:
+      - ./labs/promtail/promtail-config.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+
+volumes:
+  grafana-data:

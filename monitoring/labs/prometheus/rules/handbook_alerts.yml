@@ -1,0 +1,20 @@
+groups:
+  - name: handbook_day4
+    rules:
+      - alert: HandbookTargetDown
+        expr: up{job="node"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node exporter target down"
+          description: "job={{ $labels.job }} instance={{ $labels.instance }}"
+
+      - alert: HandbookHighCpu
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU on {{ $labels.instance }}"
+          description: "CPU above 80% for 5m (lab threshold — tune per environment)"
