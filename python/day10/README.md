@@ -201,4 +201,4 @@ Work from `python/day10/labs/`.
 | Glob | `path.glob("**/*.log")` |
 | Disk | `shutil.disk_usage(path)` |
 
-**Next:** Continue your DevOps journey—apply Days 1–10 to real pipelines, then explore cloud SDKs and testing in advanced tracks.
+**Next:** [Day 11 — JSON, YAML & TOML config loading](../day11/)
