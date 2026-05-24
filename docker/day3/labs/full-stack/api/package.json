@@ -1,0 +1,9 @@
+{
+  "name": "handbook-fullstack-api",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.21.0",
+    "pg": "^8.13.0"
+  }
+}

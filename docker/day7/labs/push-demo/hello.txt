@@ -1,0 +1,2 @@
+Docker Day 7 — push-demo image
+Built for registry push/pull lab.

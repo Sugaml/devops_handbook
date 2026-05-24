@@ -162,7 +162,7 @@ gcloud compute disks snapshot "$DATA_DISK" \
 Managed Instance Groups (MIG) use templates — Week 2 topic; create a template now for familiarity:
 
 ```bash
-gcloud compute instance-templates create handbook-template>
+gcloud compute instance-templates create handbook-web-tmpl \
   --machine-type=e2-micro \
   --image-family=debian-12 \
   --image-project=debian-cloud \

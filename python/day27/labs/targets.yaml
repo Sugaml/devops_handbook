@@ -1,0 +1,10 @@
+targets:
+  - name: httpbin-200
+    url: https://httpbin.org/status/200
+    expected_status: 200
+  - name: httpbin-418
+    url: https://httpbin.org/status/418
+    expected_status: 200
+  - name: example-com
+    url: https://example.com
+    expected_status: 200

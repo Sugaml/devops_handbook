@@ -1,0 +1,7 @@
+{
+  "events": [
+    {"name": "deploy_start", "timestamp": "2026-05-23T08:00:00Z"},
+    {"name": "deploy_end", "timestamp": "2026-05-23T08:15:00Z"},
+    {"name": "backup_complete", "timestamp": "2026-05-24T02:00:00Z"}
+  ]
+}

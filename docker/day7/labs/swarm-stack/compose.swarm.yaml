@@ -1,0 +1,18 @@
+services:
+  web:
+    image: handbook-web:swarm
+    ports:
+      - "8080:80"
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: overlay

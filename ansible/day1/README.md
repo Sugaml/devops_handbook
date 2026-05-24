@@ -385,8 +385,8 @@ Work from `ansible/day1/labs/`.
 
 ## Quick reference
 
-| Task | Command
-|------|------|
+| Task | Command |
+|------|---------|
 | Test connectivity | `ansible all -m ping` |
 | Run command | `ansible HOST -m command -a "cmd"` |
 | Install package | `ansible HOST -m apt -a "name=PKG state=present" -b` |

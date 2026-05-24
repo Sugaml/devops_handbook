@@ -1,0 +1,41 @@
+name: CI and Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt && pytest -v
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: test
+    environment:
+      name: staging
+      url: https://staging.example.com
+    steps:
+      - name: Deploy (stub)
+        env:
+          API_TOKEN: ${{ secrets.STAGING_API_TOKEN }}
+        run: |
+          echo "Deploying ${{ github.sha }} to staging"
+          test -n "$API_TOKEN"
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment:
+      name: production
+    steps:
+      - run: echo "Production deploy approved for ${{ github.sha }}"
