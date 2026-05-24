@@ -1,0 +1,24 @@
+review:
+  stage: deploy
+  image: alpine:3.19
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    url: https://review.example.com/$CI_COMMIT_REF_SLUG
+    on_stop: stop_review
+    auto_stop_in: 2 days
+  script:
+    - echo "Review app for branch $CI_COMMIT_REF_NAME"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+stop_review:
+  stage: deploy
+  image: alpine:3.19
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    action: stop
+  script:
+    - echo "Stopping review environment"
+  when: manual
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

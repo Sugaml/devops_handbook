@@ -88,7 +88,7 @@ UNION ALL SELECT 'hosts', COUNT(*) FROM hosts;
 
 ## 5. WAL and PITR (conceptual)
 
-PostgreSQL writes WAL before data files. Continuous archiving enables restore to **任意 timestamp** (within retention).
+PostgreSQL writes WAL before data files. Continuous archiving enables restore to **any timestamp** (within retention).
 
 Managed RDS:
 

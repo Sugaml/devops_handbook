@@ -14,7 +14,7 @@ from rich.console import Console
 from rich.table import Table
 
 from incident_toolkit.config import settings
-from incident_toolkit.health import assess
+from incident_toolkit.health import assess as run_assess
 from incident_toolkit.inventory import build_inventory_groups, load_hosts
 from incident_toolkit.logging_setup import configure_logging
 from incident_toolkit.metrics import ASSESS_TOTAL, REMEDIATE_TOTAL
@@ -76,7 +76,7 @@ def assess(
     structlog.contextvars.bind_contextvars(incident_id=ctx.incident_id, command="assess")
     log = structlog.get_logger()
 
-    result = asyncio.run(assess(targets, ctx, concurrency=concurrency))
+    result = asyncio.run(run_assess(targets, ctx, concurrency=concurrency))
     status = "healthy" if result.summary.unhealthy == 0 else "unhealthy"
     ASSESS_TOTAL.labels(status=status).inc()
     log.info(

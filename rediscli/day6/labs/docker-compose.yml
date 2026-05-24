@@ -1,0 +1,13 @@
+services:
+  redis-secure:
+    image: redis:7-alpine
+    container_name: rediscli-day6-secure
+    ports:
+      - "6382:6379"
+    command: ["redis-server", "/etc/redis/redis.conf"]
+    volumes:
+      - ./redis-secure.conf:/etc/redis/redis.conf:ro
+      - acldata:/data
+
+volumes:
+  acldata:
