@@ -15,7 +15,7 @@ SELECT version, status, metadata->>'git_sha' AS git_sha
 FROM deployments
 WHERE metadata ? 'git_sha';
 
-CREATE OR REPLACE FUNCTION handbook.set_updated_at()
+CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = now();
@@ -29,4 +29,4 @@ ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
 DROP TRIGGER IF EXISTS services_updated_at ON services;
 CREATE TRIGGER services_updated_at
 BEFORE UPDATE ON services
-FOR EACH ROW EXECUTE FUNCTION handbook.set_updated_at();
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();

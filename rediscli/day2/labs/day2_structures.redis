@@ -1,0 +1,23 @@
+# Day 2 structures lab
+DEL handbook:day2:queue handbook:day2:tags handbook:day2:leaderboard handbook:day2:host:web1 handbook:day2:events
+
+LPUSH handbook:day2:queue alert:cpu alert:disk alert:mem
+LRANGE handbook:day2:queue 0 -1
+RPOP handbook:day2:queue
+RPOP handbook:day2:queue
+LLEN handbook:day2:queue
+
+SADD handbook:day2:tags 10.0.0.0/8 192.168.0.0/16 172.16.0.0/12
+SISMEMBER handbook:day2:tags 10.0.0.0/8
+SCARD handbook:day2:tags
+
+ZADD handbook:day2:leaderboard 90 payments 70 auth 95 gateway
+ZREVRANGE handbook:day2:leaderboard 0 1 WITHSCORES
+
+HSET handbook:day2:host:web1 hostname web-01 ip 10.0.1.10 region us-east-1
+HINCRBY handbook:day2:host:web1 check_fails 1
+HINCRBY handbook:day2:host:web1 check_fails 1
+HGETALL handbook:day2:host:web1
+
+XADD handbook:day2:events * type deploy service api result success
+XLEN handbook:day2:events

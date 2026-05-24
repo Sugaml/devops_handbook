@@ -1,0 +1,12 @@
+# Day 1 lab — run: redis-cli < labs/day1_basics.redis
+PING
+SET handbook:day1:env lab
+GET handbook:day1:env
+SET handbook:day1:visits 0
+INCR handbook:day1:visits
+INCRBY handbook:day1:visits 9
+GET handbook:day1:visits
+SET handbook:day1:session token123 EX 300
+TTL handbook:day1:session
+TYPE handbook:day1:env
+DEL handbook:day1:env handbook:day1:visits handbook:day1:session
