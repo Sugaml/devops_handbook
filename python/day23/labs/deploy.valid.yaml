@@ -1,0 +1,9 @@
+deployment:
+  name: web-frontend
+  replicas: 3
+  image: ghcr.io/handbook/web:1.4.2
+  env: staging
+  team: platform
+  limits:
+    cpu: "500m"
+    memory: 512Mi

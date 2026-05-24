@@ -1,0 +1,5 @@
+{
+  "app": "payments-api",
+  "replicas": 3,
+  "region": "us-east-1"
+}

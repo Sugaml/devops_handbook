@@ -1,0 +1,9 @@
+environment = "production"
+log_level = "warning"
+
+[services]
+# TOML cannot express YAML lists inline here; override top-level keys only.
+# For list overrides, use a second YAML file in real projects.
+
+[retry]
+max_attempts = 5

@@ -1,0 +1,11 @@
+# Optional — uncomment and fill after Day 3 bootstrap
+#
+# terraform {
+#   backend "s3" {
+#     bucket         = "devops-handbook-tfstate-ACCOUNT_ID"
+#     key            = "day7/capstone/lab/terraform.tfstate"
+#     region         = "us-east-1"
+#     dynamodb_table = "devops-handbook-tflock"
+#     encrypt        = true
+#   }
+# }

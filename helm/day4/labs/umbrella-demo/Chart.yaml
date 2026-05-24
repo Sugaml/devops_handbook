@@ -1,0 +1,15 @@
+apiVersion: v2
+name: umbrella-demo
+description: Day 4 — parent chart with local subchart + optional remote dependency
+type: application
+version: 0.1.0
+appVersion: "1.0"
+dependencies:
+  - name: sample-web
+    version: "0.1.0"
+    repository: "file://../sample-web"
+    condition: sample-web.enabled
+  - name: redis
+    version: "20.6.2"
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "web1",
+    "group": "webservers",
+    "ansible_host": "127.0.0.1",
+    "ansible_user": "ubuntu",
+    "ansible_connection": "local",
+    "env": "lab"
+  },
+  {
+    "name": "web2",
+    "group": "webservers",
+    "ansible_host": "127.0.0.1",
+    "ansible_user": "ubuntu",
+    "ansible_connection": "local",
+    "env": "lab"
+  },
+  {
+    "name": "db1",
+    "group": "dbservers",
+    "ansible_host": "127.0.0.1",
+    "ansible_user": "ubuntu",
+    "ansible_connection": "local",
+    "env": "lab"
+  }
+]

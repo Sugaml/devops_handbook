@@ -1,0 +1,83 @@
+---
+- name: Configure handbook web servers
+  hosts: webservers
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Show target host
+      ansible.builtin.debug:
+        msg: "Configuring {{ inventory_hostname }} ({{ ansible_distribution }} {{ ansible_distribution_version }})"
+
+    - name: Install nginx (Debian/Ubuntu)
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+      when: ansible_os_family == "Debian"
+
+    - name: Install nginx (RHEL family)
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Create document root
+      ansible.builtin.file:
+        path: /var/www/handbook
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: "0755"
+      when: ansible_os_family == "Debian"
+
+    - name: Create document root (RHEL)
+      ansible.builtin.file:
+        path: /var/www/handbook
+        state: directory
+        owner: nginx
+        group: nginx
+        mode: "0755"
+      when: ansible_os_family == "RedHat"
+
+    - name: Deploy index page
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/handbook/index.html
+        mode: "0644"
+      notify: Reload nginx
+
+    - name: Deploy nginx site config (Debian)
+      ansible.builtin.copy:
+        src: files/handbook.conf
+        dest: /etc/nginx/sites-available/handbook.conf
+        mode: "0644"
+      when: ansible_os_family == "Debian"
+      notify: Reload nginx
+
+    - name: Enable handbook site (Debian)
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/handbook.conf
+        dest: /etc/nginx/sites-enabled/handbook.conf
+        state: link
+      when: ansible_os_family == "Debian"
+      notify: Reload nginx
+
+    - name: Remove default nginx site (Debian)
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      when: ansible_os_family == "Debian"
+      notify: Reload nginx
+
+    - name: Ensure nginx is started and enabled
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded

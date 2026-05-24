@@ -1,0 +1,36 @@
+# Lab targets for Day 6 dynamic inventory.
+# Requires SSH-enabled images — adjust images/ports for your environment.
+# For VM-based labs, skip compose and use static inventory from Day 1.
+
+services:
+  handbook-web1:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: handbook-web1
+    environment:
+      PUID: 1000
+      PGID: 1000
+      PASSWORD_ACCESS: "true"
+      USER_PASSWORD: changeme
+      USER_NAME: ansible
+    ports:
+      - "2221:2222"
+    labels:
+      handbook: day6
+      handbook.role: web
+      handbook.env: lab
+
+  handbook-web2:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: handbook-web2
+    environment:
+      PUID: 1000
+      PGID: 1000
+      PASSWORD_ACCESS: "true"
+      USER_PASSWORD: changeme
+      USER_NAME: ansible
+    ports:
+      - "2222:2222"
+    labels:
+      handbook: day6
+      handbook.role: web
+      handbook.env: lab

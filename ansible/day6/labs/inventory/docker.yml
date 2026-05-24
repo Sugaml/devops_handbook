@@ -1,0 +1,19 @@
+---
+plugin: community.docker.docker_containers
+docker_host: unix:///var/run/docker.sock
+compose:
+  ansible_host: >-
+    {{
+      (NetworkSettings.Ports['22/tcp'] | default([]) | first).HostPort
+      if (NetworkSettings.Ports['22/tcp'] | default([]) | length > 0)
+      else ansible_host | default(inventory_hostname)
+    }}
+  ansible_connection: ssh
+  ansible_user: ansible
+keyed_groups:
+  - key: Config.Labels.handbook_role
+    prefix: role
+  - key: Config.Labels.handbook_env
+    prefix: env
+filters:
+  label=handbook=day6

@@ -1,0 +1,14 @@
+---
+- name: Create app directory
+  ansible.builtin.file:
+    path: "{{ app_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+
+- name: Deploy application index
+  ansible.builtin.template:
+    src: app-index.html.j2
+    dest: "{{ app_root }}/index.html"
+    mode: "0644"

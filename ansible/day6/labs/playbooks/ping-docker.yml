@@ -1,0 +1,12 @@
+---
+- name: Verify Docker dynamic inventory connectivity
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ping all discovered containers/hosts
+      ansible.builtin.ping:
+
+    - name: Show hostvars summary
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} ansible_host={{ ansible_host | default('n/a') }}"

@@ -1,0 +1,8 @@
+---
+- name: Apply web stack via roles
+  hosts: webservers
+  become: true
+  roles:
+    - common
+    - nginx
+    - app_deploy

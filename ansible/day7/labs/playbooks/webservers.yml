@@ -1,0 +1,9 @@
+---
+- name: Configure web tier baseline
+  hosts: webservers
+  become: true
+  roles:
+    - role: common
+      tags: [baseline, common]
+    - role: nginx
+      tags: [baseline, nginx, config]

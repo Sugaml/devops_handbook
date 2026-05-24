@@ -1,0 +1,22 @@
+---
+- name: Create app directory
+  ansible.builtin.file:
+    path: "{{ app_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+
+- name: Deploy application index
+  ansible.builtin.template:
+    src: app-index.html.j2
+    dest: "{{ app_root }}/index.html"
+    mode: "0644"
+
+- name: Deploy app environment file
+  ansible.builtin.template:
+    src: app.env.j2
+    dest: /etc/handbook-app.env
+    mode: "0600"
+  when: vault_app_secret is defined
+  no_log: true

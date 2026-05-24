@@ -1,0 +1,6 @@
+apiVersion: v2
+name: sample-web
+description: Subchart for umbrella-demo (copy of day2 chart, version pinned)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

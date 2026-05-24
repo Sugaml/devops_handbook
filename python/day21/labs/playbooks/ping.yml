@@ -1,0 +1,7 @@
+---
+- name: Day 21 connectivity check
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ping managed nodes
+      ansible.builtin.ping:

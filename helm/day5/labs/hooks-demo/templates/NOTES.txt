@@ -1,0 +1,11 @@
+Hooks demo installed.
+
+  kubectl get deploy,svc -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}
+
+Port-forward:
+
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "hooks-demo.fullname" . }} 8080:{{ .Values.service.port }}
+
+Run tests:
+
+  helm test {{ .Release.Name }} -n {{ .Release.Namespace }}

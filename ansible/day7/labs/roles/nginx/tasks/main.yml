@@ -1,0 +1,50 @@
+---
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Remove default site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  when: ansible_os_family == "Debian"
+  notify: Reload nginx
+
+- name: Create vhost document roots
+  ansible.builtin.file:
+    path: "{{ item.root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Deploy vhost configuration
+  ansible.builtin.template:
+    src: nginx-vhost.conf.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}.conf"
+    mode: "0644"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    label: "{{ item.name }}"
+  notify: Reload nginx
+
+- name: Enable vhost sites
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ item.name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.conf"
+    state: link
+  loop: "{{ nginx_vhosts }}"
+  when: ansible_os_family == "Debian"
+  notify: Reload nginx
+
+- name: Ensure nginx is running
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true

@@ -1,0 +1,9 @@
+dependencies:
+- name: sample-web
+  repository: file://../sample-web
+  version: 0.1.0
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 20.6.2
+digest: sha256:894fd710abe2a13450ae7a3df9dbfa8e5bef056b9cfba75772be50efac5c167f
+generated: "2026-05-24T06:24:49.184933+05:45"

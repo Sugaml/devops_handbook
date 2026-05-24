@@ -1,0 +1,3 @@
+2026-05-24T10:00:00 INFO Starting deploy pipeline
+2026-05-24T10:00:01 DEBUG api_key=sk-live-abc123shouldnotbelogged
+2026-05-24T10:00:02 INFO Deploy complete

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook-kustomize
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/YOUR_ORG/gitops-handbook.git
+    targetRevision: main
+    path: argocd/day4/labs/kustomize-guestbook/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: handbook-lab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

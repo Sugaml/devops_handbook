@@ -1,0 +1,70 @@
+# Production-oriented Helm values for Argo CD HA
+# Reference: https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+
+global:
+  domain: argocd.example.com
+
+configs:
+  params:
+    server.insecure: "false"
+  cm:
+    admin.enabled: "false"
+    url: https://argocd.example.com
+    timeout.reconciliation: 180s
+    reposerver.parallelism.limit: "10"
+  rbac:
+    policy.default: role:readonly
+
+controller:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+
+repoServer:
+  replicas: 2
+  metrics:
+    enabled: true
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+server:
+  replicas: 2
+  metrics:
+    enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls: true
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+redis-ha:
+  enabled: true
+
+applicationSet:
+  replicas: 2
+
+notifications:
+  enabled: true
+
+dex:
+  enabled: true

@@ -1,0 +1,6 @@
+# Encrypted with ansible-vault — create in lab:
+#   ansible-vault create group_vars/webservers/vault.yml
+#
+# Example plaintext content before encryption:
+---
+vault_app_secret: handbook-day5-change-me

@@ -1,0 +1,32 @@
+# Example CI workflow — commit image tag to GitOps repo
+# Save as .github/workflows/promote-dev.yml in your application repo
+name: Promote to dev GitOps
+on:
+  push:
+    branches: [main]
+jobs:
+  update-gitops:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v4
+        with:
+          repository: YOUR_ORG/gitops-handbook
+          token: ${{ secrets.GITOPS_PAT }}
+          path: gitops
+
+      - name: Update image tag
+        working-directory: gitops
+        run: |
+          TAG="${{ github.sha }}"
+          FILE="apps/api/overlays/dev/kustomization.yaml"
+          # Using kustomize images field
+          sed -i "s/newTag: .*/newTag: ${TAG:0:7}/" "$FILE" || \
+            yq -i ".images[0].newTag = \"${TAG:0:7}\"" "$FILE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$FILE"
+          git diff --staged --quiet || git commit -m "chore(api): deploy ${TAG:0:7}"
+          git push
+
+      # Argo CD auto-sync picks up the commit — no kubectl in CI

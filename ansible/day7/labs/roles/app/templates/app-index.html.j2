@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>{{ app_name }}</title></head>
+<body>
+  <h1>{{ app_name }} v{{ app_version }}</h1>
+  <p>Environment: {{ env_name | default('unknown') }}</p>
+  <p>Host: {{ inventory_hostname }}</p>
+</body>
+</html>

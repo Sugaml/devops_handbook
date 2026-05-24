@@ -1,0 +1,5 @@
+[
+  {"name": "web1", "group": "webservers", "env": "staging", "ansible_host": "10.0.1.10"},
+  {"name": "web2", "group": "webservers", "env": "prod", "ansible_host": "10.0.1.11"},
+  {"name": "db1", "group": "dbservers", "env": "prod", "ansible_host": "10.0.2.5"}
+]

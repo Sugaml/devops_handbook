@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotatingNumToKeepStr: '10')
+        timeout(time: 15, unit: 'MINUTES')
+        timestamps()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Test') {
+            steps {
+                sh '''
+                    python3 -m venv .venv
+                    . .venv/bin/activate
+                    pip install -r requirements.txt
+                    pytest -v
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'All tests passed'
+        }
+        failure {
+            echo 'Tests failed — fix before merge'
+        }
+        always {
+            cleanWs()
+        }
+    }
+}

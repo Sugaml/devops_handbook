@@ -1,0 +1,9 @@
+---
+- name: Deploy application release
+  hosts: webservers
+  become: true
+  serial: "50%"
+  max_fail_percentage: 0
+  roles:
+    - role: app
+      tags: [app, deploy]

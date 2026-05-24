@@ -1,0 +1,12 @@
+global:
+  environment: production
+
+sample-web:
+  replicaCount: 3
+
+redis:
+  enabled: true
+  master:
+    resources:
+      requests:
+        memory: 256Mi

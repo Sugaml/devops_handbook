@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>{{ app_name | default('handbook') }}</title></head>
+<body>
+  <h1>{{ app_name | default('handbook') }} v{{ app_version }}</h1>
+  <p>Deployed to {{ inventory_hostname }} via role app_deploy.</p>
+</body>
+</html>

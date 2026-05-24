@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: handbook
+  namespace: argocd
+spec:
+  description: DevOps handbook lab — restricted repos and namespaces
+  sourceRepos:
+    - https://github.com/argoproj/argocd-example-apps.git
+    - https://github.com/YOUR_ORG/gitops-handbook.git
+    - https://charts.bitnami.com/bitnami
+  destinations:
+    - namespace: handbook-lab
+      server: https://kubernetes.default.svc
+    - namespace: handbook-staging
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceBlacklist: []
+  orphanedResources:
+    warn: true
+  roles:
+    - name: developer
+      description: Read and sync handbook apps
+      policies:
+        - p, proj:handbook:developer, applications, get, handbook/*, allow
+        - p, proj:handbook:developer, applications, sync, handbook/*, allow
+      groups:
+        - handbook-developers

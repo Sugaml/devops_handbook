@@ -1,0 +1,6 @@
+apiVersion: v2
+name: hooks-demo
+description: Day 5 — lifecycle hooks and helm test
+type: application
+version: 0.1.0
+appVersion: "1.0"

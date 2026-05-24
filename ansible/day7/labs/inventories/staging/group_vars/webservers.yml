@@ -1,0 +1,8 @@
+---
+http_port: 80
+app_name: handbook
+app_version: "1.0.0"
+nginx_vhosts:
+  - name: app
+    server_name: app.staging.localdev.me
+    root: /var/www/handbook-app

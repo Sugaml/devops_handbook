@@ -1,0 +1,7 @@
+endpoints:
+  - name: httpbin-200
+    url: https://httpbin.org/status/200
+  - name: httpbin-json
+    url: https://httpbin.org/json
+  - name: httpbin-delay
+    url: https://httpbin.org/delay/1

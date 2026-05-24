@@ -1,0 +1,56 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "terraform/day6/labs/day6-ci/**"
+  pull_request:
+    paths:
+      - "terraform/day6/labs/day6-ci/**"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: terraform/day6/labs/day6-ci
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.0"
+
+      - name: Format check
+        run: terraform fmt -check -recursive
+
+      - name: Init (no backend)
+        run: terraform init -backend=false
+
+      - name: Validate
+        run: terraform validate
+
+      - name: Run tests
+        run: terraform test
+
+  # plan-with-aws:
+  #   needs: validate
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'pull_request'
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: hashicorp/setup-terraform@v3
+  #     - uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         role-to-assume: ${{ secrets.TF_AWS_ROLE_ARN }}
+  #         aws-region: us-east-1
+  #     - run: terraform init
+  #     - run: terraform plan -no-color -out=tfplan

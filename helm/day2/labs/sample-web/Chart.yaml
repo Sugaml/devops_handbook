@@ -1,0 +1,6 @@
+apiVersion: v2
+name: sample-web
+description: DevOps handbook — minimal nginx chart for Day 2 labs
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

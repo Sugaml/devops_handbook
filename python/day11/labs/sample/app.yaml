@@ -1,0 +1,11 @@
+environment: staging
+log_level: info
+services:
+  - name: api
+    port: 8080
+    health_path: /health
+  - name: worker
+    port: 9090
+retry:
+  max_attempts: 3
+  backoff_seconds: 5

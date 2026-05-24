@@ -1,0 +1,9 @@
+deployment:
+  name: web_FRONTEND
+  replicas: 1
+  image: nginx
+  env: prod
+  team: x
+  limits:
+    cpu: "2"
+    memory: 1TB

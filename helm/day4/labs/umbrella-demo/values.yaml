@@ -1,0 +1,15 @@
+global:
+  environment: dev
+
+sample-web:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: 1.27-alpine
+
+redis:
+  enabled: false
+  architecture: standalone
+  auth:
+    enabled: false

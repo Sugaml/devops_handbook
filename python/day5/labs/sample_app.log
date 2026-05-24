@@ -1,0 +1,7 @@
+2026-05-24T10:00:01Z INFO  server started port=8080
+2026-05-24T10:00:05Z INFO  health check ok
+2026-05-24T10:01:12Z WARN  disk usage 82% mount=/var
+2026-05-24T10:02:44Z ERROR payment timeout order_id=9912
+2026-05-24T10:03:01Z ERROR payment timeout order_id=9918
+2026-05-24T10:03:15Z ERROR database connection refused host=db.internal
+2026-05-24T10:04:00Z INFO  retry succeeded order_id=9912

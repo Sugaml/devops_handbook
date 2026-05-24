@@ -1,0 +1,9 @@
+deployment:
+  name: api-gateway
+  replicas: 2
+  image: ghcr.io/handbook/api:2.1.0
+  env: staging
+  team: platform
+  limits:
+    cpu: "250m"
+    memory: 256Mi

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: template-lab
+description: Day 3 — templating patterns (conditionals, range, required)
+type: application
+version: 0.1.0
+appVersion: "1.0"

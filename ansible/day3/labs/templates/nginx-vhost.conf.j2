@@ -1,0 +1,19 @@
+server {
+    listen {{ http_port }};
+    listen [::]:{{ http_port }};
+    server_name {{ item.server_name }};
+
+    root {{ item.root }};
+    index index.html;
+
+    access_log /var/log/nginx/{{ item.name }}_access.log;
+    error_log  /var/log/nginx/{{ item.name }}_error.log;
+
+{% if primary | default(false) %}
+    client_body_timeout 10s;
+{% endif %}
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

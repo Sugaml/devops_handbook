@@ -1,0 +1,10 @@
+---
+http_port: 80
+app_name: handbook
+vhosts:
+  - name: app1
+    server_name: app1.localdev.me
+    root: /var/www/app1
+  - name: app2
+    server_name: app2.localdev.me
+    root: /var/www/app2

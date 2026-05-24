@@ -1,0 +1,55 @@
+---
+- name: Deploy application with blocks and tags
+  hosts: webservers
+  become: true
+  serial: 1
+
+  tasks:
+    - name: Install application dependencies
+      ansible.builtin.apt:
+        name:
+          - nginx
+          - acl
+        state: present
+        update_cache: true
+      tags: [packages, never]
+
+    - name: Deploy application configuration
+      block:
+        - name: Create app config directory
+          ansible.builtin.file:
+            path: /etc/handbook-app
+            state: directory
+            mode: "0750"
+
+        - name: Deploy environment file from vault
+          ansible.builtin.template:
+            src: app.env.j2
+            dest: /etc/handbook-app/app.env
+            mode: "0600"
+          tags: [config, deploy]
+
+        - name: Validate nginx configuration
+          ansible.builtin.command: nginx -t
+          register: nginx_validate
+          changed_when: false
+
+      rescue:
+        - name: Report configuration failure
+          ansible.builtin.debug:
+            msg: "Configuration failed on {{ inventory_hostname }}: {{ nginx_validate.stderr | default('unknown') }}"
+
+      always:
+        - name: Record deploy timestamp
+          ansible.builtin.copy:
+            content: "last_deploy={{ ansible_date_time.iso8601 }}\n"
+            dest: /var/log/handbook-deploy.log
+            mode: "0644"
+          tags: [deploy, always]
+
+    - name: Ensure nginx running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+      tags: [config]
