@@ -1,4 +1,4 @@
-INSERT INTO environments (name, region, tier) OVERRIDING SYSTEM VALUE VALUES
+INSERT INTO environments (id, name, region, tier) OVERRIDING SYSTEM VALUE VALUES
     (1, 'staging',    'us-east-1', 'nonprod'),
     (2, 'production', 'us-east-1', 'prod'),
     (3, 'production', 'eu-west-1', 'prod'),

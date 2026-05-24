@@ -1,0 +1,16 @@
+services:
+  redis-capstone:
+    image: redis:7-alpine
+    container_name: rediscli-day7-capstone
+    ports:
+      - "6383:6379"
+    command:
+      - redis-server
+      - --maxmemory
+      - 64mb
+      - --maxmemory-policy
+      - allkeys-lru
+      - --appendonly
+      - "yes"
+      - --slowlog-log-slower-than
+      - "1000"

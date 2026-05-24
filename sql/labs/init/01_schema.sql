@@ -2,9 +2,10 @@
 
 CREATE TABLE environments (
     id          SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name        TEXT NOT NULL UNIQUE,
+    name        TEXT NOT NULL,
     region      TEXT NOT NULL,
-    tier        TEXT NOT NULL CHECK (tier IN ('nonprod', 'prod', 'dr'))
+    tier        TEXT NOT NULL CHECK (tier IN ('nonprod', 'prod', 'dr')),
+    UNIQUE (name, region)
 );
 
 CREATE TABLE services (

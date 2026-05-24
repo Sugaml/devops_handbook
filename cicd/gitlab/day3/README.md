@@ -10,8 +10,7 @@
 
 | Type | Who pays / manages | Typical use |
 |------|-------------------|-------------|
-| **Shared (SaaS)**
-)** | GitLab.com shared pool | OSS, small projects |
+| **Shared (SaaS)** | GitLab.com shared pool | OSS, small projects |
 | **Group runner** | Your org | Many projects in group |
 | **Project runner** | Single project | Dedicated, secrets isolation |
 | **Self-managed** | You on VM/K8s | Private network, custom hardware |

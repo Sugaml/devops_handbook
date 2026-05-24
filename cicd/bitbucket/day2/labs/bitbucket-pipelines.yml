@@ -1,0 +1,39 @@
+image: python:3.12-slim
+
+definitions:
+  caches:
+    pip: ~/.cache/pip
+  services:
+    docker:
+      memory: 2048
+
+pipelines:
+  branches:
+    main:
+      - parallel:
+          - step:
+              name: Unit tests
+              caches:
+                - pip
+              script:
+                - pip install -r requirements.txt
+                - pytest -v
+          - step:
+              name: Lint
+              script:
+                - pip install flake8
+                - flake8 src/ || true
+      - step:
+          name: Docker build
+          services:
+            - docker
+          script:
+            - docker build -t sample-web:${BITBUCKET_COMMIT} .
+  default:
+    - step:
+        name: Test
+        caches:
+          - pip
+        script:
+          - pip install -r requirements.txt
+          - pytest -v
