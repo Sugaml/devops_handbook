@@ -1,0 +1,2 @@
+DevOps Handbook — Day 18 SSH lab
+Replace this file on remote hosts via SFTP upload.

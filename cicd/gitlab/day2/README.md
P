@@ -1,0 +1,114 @@
+# Day 2 — Stages, Jobs, Rules & DAG (`needs`)
+
+**Goal:** Structure multi-stage pipelines, control when jobs run with `rules`, and speed up with directed acyclic graphs.
+
+**Time:** 4–6 hours
+
+---
+
+## 1. Multi-stage pipeline
+
+```yaml
+stages:
+  - lint
+  - test
+  - deploy
+
+lint:
+  stage: lint
+  image: python:3.12-slim
+  script:
+    - pip install flake8 && flake8 src/ || true
+
+test:
+  stage: test
+  image: python:3.12-slim
+  script:
+    - pip install -r requirements.txt && pytest -v
+
+deploy_staging:
+  stage: deploy
+  image: alpine:3.19
+  script:
+    - echo "Deploy $CI_COMMIT_SHORT_SHA to staging"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+```
+
+Stages run in order; jobs in same stage run in parallel.
+
+---
+
+## 2. `rules` (preferred over legacy `only/except`)
+
+```yaml
+test:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - when: never
+```
+
+| Rule | Use |
+|------|-----|
+| MR pipelines | `merge_request_event` |
+| Main only | `$CI_COMMIT_BRANCH == "main"` |
+| Manual | `when: manual` |
+| Skip | `when: never` |
+
+---
+
+## 3. `needs` — DAG pipelines
+
+```yaml
+stages:
+  - build
+  - test
+
+build_assets:
+  stage: build
+  script:
+    - echo "build"
+
+unit_tests:
+  stage: test
+  needs: [build_assets]
+  script:
+    - pytest -v
+```
+
+Job starts as soon as dependencies finish—don't wait for whole stage.
+
+---
+
+## 4. Merge request pipelines
+
+Enable: **Settings → Merge requests → Pipelines must succeed**
+
+```yaml
+test:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+```
+
+---
+
+## 5. Lab — Day 2
+
+1. Add lint + test + deploy stages from [labs/.gitlab-ci.yml](./labs/.gitlab-ci.yml).
+2. Open MR; verify MR pipeline runs.
+3. Add `needs` between build stub and test.
+4. Add manual `deploy_production` with `when: manual`.
+
+---
+
+## Quick reference
+
+| Feature | Keyword |
+|---------|---------|
+| Conditional jobs | `rules:` |
+| DAG | `needs:` |
+| Manual deploy | `when: manual` |
+
+**Prev:** [Day 1](../day1/) · **Next:** [Day 3 — Runners](../day3/)

@@ -1,0 +1,22 @@
+services:
+  redis-primary:
+    image: redis:7-alpine
+    container_name: rediscli-day4-primary
+    ports:
+      - "6380:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+
+  redis-replica:
+    image: redis:7-alpine
+    container_name: rediscli-day4-replica
+    ports:
+      - "6381:6379"
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --replicaof
+      - redis-primary
+      - "6379"
+    depends_on:
+      - redis-primary

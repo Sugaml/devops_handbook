@@ -1,0 +1,37 @@
+stages:
+  - lint
+  - test
+  - deploy
+
+lint:
+  stage: lint
+  image: python:3.12-slim
+  script:
+    - pip install flake8
+    - flake8 src/ || true
+
+test:
+  stage: test
+  image: python:3.12-slim
+  script:
+    - pip install -r requirements.txt
+    - pytest -v
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy_staging:
+  stage: deploy
+  image: alpine:3.19
+  script:
+    - echo "Deploy ${CI_COMMIT_SHORT_SHA} to staging"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy_production:
+  stage: deploy
+  script:
+    - echo "Production deploy ${CI_COMMIT_SHORT_SHA}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual

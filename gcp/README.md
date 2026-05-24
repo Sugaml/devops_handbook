@@ -75,7 +75,7 @@ export LAB_LABELS="env=lab,project=devops-handbook"
 |----------|-----------|
 | Compute Engine VM (`e2-micro`) | Free tier eligible in select regions — still **delete after labs** |
 | Persistent disk | Charged while disk exists, even if VM stopped |
-| Cloud NAT | ~$0.045/hr + data — only enable when taught; deleteSelected for Week 2** |
+| Cloud NAT | ~$0.045/hr + data — only enable when taught; delete after lab |
 | External IP (static) | Small hourly charge if unattached |
 | Cloud Storage | Pennies for lab buckets; delete buckets + objects in teardown |
 

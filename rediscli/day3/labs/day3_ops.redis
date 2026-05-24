@@ -1,0 +1,11 @@
+SET handbook:day3:persist "survives restart"
+INFO server
+INFO memory
+INFO persistence
+CONFIG GET save
+CONFIG GET appendonly
+CONFIG GET maxmemory
+CONFIG GET maxmemory-policy
+DBSIZE
+SLOWLOG LEN
+BGSAVE

@@ -81,7 +81,7 @@ gcloud iam service-accounts list \
   --filter="displayName:Handbook"
 ```
 
-Common operators: `=`, `!=`, `<`, `>`, `:`` (has), `~` (regex), `AND`, `OR`, `NOT`.
+Common operators: `=`, `!=`, `<`, `>`, `:` (has), `~` (regex), `AND`, `OR`, `NOT`.
 
 **DevOps note:** Filters run **server-side** — prefer them over `grep` on full JSON for large projects.
 
